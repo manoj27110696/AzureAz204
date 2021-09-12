@@ -1,0 +1,40 @@
+az login
+az container create 
+--resource-group 1-b5731507-playground-sandbox 
+--name myapp 
+--image mcr.microsoft.com/azuredocs/aci-helloworld:latest 
+--dns manojdns 
+--ip-address Public 
+--ports 80 443 
+--cpu 1 
+--memory 1
+
+ az container start 
+ --resource-group 1-b5731507-playground-sandbox 
+--name myapp 
+
+az resource list 
+--resource-group 1-b5731507-playground-sandbox 
+
+az container show 
+--resource-group 1-b5731507-playground-sandbox 
+--name myapp 
+
+az container show 
+--resource-group 1-b5731507-playground-sandbox 
+--name myapp 
+--query instanceView.state 
+--output table
+
+# show IP address
+az container show 
+--resource-group 1-b5731507-playground-sandbox 
+--name myapp 
+--query {ipAddress:ip,ipAddress:fqdn} 
+--output table 
+
+
+az vm list 
+-g QueryDemo 
+--query '[].{Name:name, OS:storageProfile.osDisk.osType, admin:osProfile.adminUsername}' 
+-o json
