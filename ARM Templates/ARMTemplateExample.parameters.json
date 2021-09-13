@@ -1,0 +1,15 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "acg-vm02Name": {
+            "value": "" // TODO: Fill in parameter value
+        },
+        "acg-vm02AdminUserName": {
+            "value": "" // TODO: Fill in parameter value
+        },
+        "acg-vm02AdminPassword": {
+            "value": "" // TODO: Fill in parameter value
+        }
+    }
+}

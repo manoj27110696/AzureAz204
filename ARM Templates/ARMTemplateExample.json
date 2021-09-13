@@ -1,0 +1,171 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "acg-vm02Name": {
+            "type": "string",
+            "minLength": 1
+        },
+        "acg-vm02AdminUserName": {
+            "type": "string",
+            "minLength": 1
+        },
+        "acg-vm02AdminPassword": {
+            "type": "securestring"
+        },
+        "acg-vm02WindowsOSVersion": {
+            "type": "string",
+            "defaultValue": "2012-R2-Datacenter",
+            "allowedValues": [
+                "2008-R2-SP1",
+                "2012-Datacenter",
+                "2012-R2-Datacenter",
+                "Windows-Server-Technical-Preview"
+            ]
+        },
+        "acg-storage2Type": {
+            "type": "string",
+            "defaultValue": "Standard_LRS",
+            "allowedValues": [
+                "Standard_LRS",
+                "Standard_ZRS",
+                "Standard_GRS",
+                "Standard_RAGRS",
+                "Premium_LRS"
+            ]
+        }
+    },
+    "resources": [
+        {
+            "name": "acg-network23",
+            "type": "Microsoft.Network/virtualNetworks",
+            "location": "[resourceGroup().location]",
+            "apiVersion": "2015-06-15",
+            "dependsOn": [],
+            "tags": {
+                "displayName": "acg-network23"
+            },
+            "properties": {
+                "addressSpace": {
+                    "addressPrefixes": [
+                        "[variables('acg-network23Prefix')]"
+                    ]
+                },
+                "subnets": [
+                    {
+                        "name": "[variables('acg-network23Subnet1Name')]",
+                        "properties": {
+                            "addressPrefix": "[variables('acg-network23Subnet1Prefix')]"
+                        }
+                    },
+                    {
+                        "name": "[variables('acg-network23Subnet2Name')]",
+                        "properties": {
+                            "addressPrefix": "[variables('acg-network23Subnet2Prefix')]"
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "name": "[variables('acg-vm02NicName')]",
+            "type": "Microsoft.Network/networkInterfaces",
+            "location": "[resourceGroup().location]",
+            "apiVersion": "2015-06-15",
+            "dependsOn": [
+                "[concat('Microsoft.Network/virtualNetworks/', 'acg-network23')]"
+            ],
+            "tags": {
+                "displayName": "acg-vm02Nic"
+            },
+            "properties": {
+                "ipConfigurations": [
+                    {
+                        "name": "ipconfig1",
+                        "properties": {
+                            "privateIPAllocationMethod": "Dynamic",
+                            "subnet": {
+                                "id": "[variables('acg-vm02SubnetRef')]"
+                            }
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            "name": "[parameters('acg-vm02Name')]",
+            "type": "Microsoft.Compute/virtualMachines",
+            "location": "[resourceGroup().location]",
+            "apiVersion": "2015-06-15",
+            "dependsOn": [
+                "[concat('Microsoft.Storage/storageAccounts/', variables('acg-storage2Name'))]",
+                "[concat('Microsoft.Network/networkInterfaces/', variables('acg-vm02NicName'))]"
+            ],
+            "tags": {
+                "displayName": "acg-vm02"
+            },
+            "properties": {
+                "hardwareProfile": {
+                    "vmSize": "[variables('acg-vm02VmSize')]"
+                },
+                "osProfile": {
+                    "computerName": "[parameters('acg-vm02Name')]",
+                    "adminUsername": "[parameters('acg-vm02AdminUsername')]",
+                    "adminPassword": "[parameters('acg-vm02AdminPassword')]"
+                },
+                "storageProfile": {
+                    "imageReference": {
+                        "publisher": "[variables('acg-vm02ImagePublisher')]",
+                        "offer": "[variables('acg-vm02ImageOffer')]",
+                        "sku": "[parameters('acg-vm02WindowsOSVersion')]",
+                        "version": "latest"
+                    },
+                    "osDisk": {
+                        "name": "acg-vm02OSDisk",
+                        "vhd": {
+                            "uri": "[concat('http://', variables('acg-storage2Name'), '.blob.core.windows.net/', variables('acg-vm02StorageAccountContainerName'), '/', variables('acg-vm02OSDiskName'), '.vhd')]"
+                        },
+                        "caching": "ReadWrite",
+                        "createOption": "FromImage"
+                    }
+                },
+                "networkProfile": {
+                    "networkInterfaces": [
+                        {
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces', variables('acg-vm02NicName'))]"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "name": "[variables('acg-storage2Name')]",
+            "type": "Microsoft.Storage/storageAccounts",
+            "location": "[resourceGroup().location]",
+            "apiVersion": "2015-06-15",
+            "dependsOn": [],
+            "tags": {
+                "displayName": "acg-storage2"
+            },
+            "properties": {
+                "accountType": "[parameters('acg-storage2Type')]"
+            }
+        }
+    ],
+    "variables": {
+        "acg-network23Prefix": "10.0.0.0/16",
+        "acg-network23Subnet1Name": "Subnet-1",
+        "acg-network23Subnet1Prefix": "10.0.0.0/24",
+        "acg-network23Subnet2Name": "Subnet-2",
+        "acg-network23Subnet2Prefix": "10.0.1.0/24",
+        "acg-vm02ImagePublisher": "MicrosoftWindowsServer",
+        "acg-vm02ImageOffer": "WindowsServer",
+        "acg-vm02OSDiskName": "acg-vm02OSDisk",
+        "acg-vm02VmSize": "Standard_D1",
+        "acg-vm02VnetID": "[resourceId('Microsoft.Network/virtualNetworks', 'acg-network23')]",
+        "acg-vm02SubnetRef": "[concat(variables('acg-vm02VnetID'), '/subnets/', variables('acg-network23Subnet1Name'))]",
+        "acg-vm02StorageAccountContainerName": "vhds",
+        "acg-vm02NicName": "[concat(parameters('acg-vm02Name'), 'NetworkInterface')]",
+        "acg-storage2Name": "[concat('acg-storage2', uniqueString(resourceGroup().id))]"
+    }
+}

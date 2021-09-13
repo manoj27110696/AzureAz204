@@ -1,0 +1,21 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "acg-lab-vmName": {
+            "value": "labvm01"
+        },
+        "acg-lab-vmAdminUserName": {
+            "value": "manoj"
+        },
+        "acg-lab-vmAdminPassword": {
+            "value": null
+        },
+        "acg-lab-vmWindowsOSVersion": {
+            "value": "2012-R2-Datacenter"
+        },
+        "acgstorageType": {
+            "value": "Standard_LRS"
+        }
+    }
+}
