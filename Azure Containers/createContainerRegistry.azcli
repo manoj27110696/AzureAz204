@@ -1,0 +1,18 @@
+az acr create 
+--resource-group 1-637f19d0-playground-sandbox  
+--name azureDaleManojRegistry 
+--sku Basic 
+
+
+
+#   "loginServer": "azuredalemanojregistry.azurecr.io",
+# pushing an image into the registry
+# Docker tag <path to image>/<yourimage><login registry server>/<yourimagename> :v1
+# docker push <imagename>:v1
+
+#example docker pull mcr.microsoft.com/hello-world
+# docker tag macr.microsoft.com/hello-world azuredalemanojregistry.azurecr.io/hello-world:v1
+# docker push azuredalemanojregistry.azurecr.io/hello-world:v1
+
+az acr repository list 
+--name azureDaleManojRegistry 
