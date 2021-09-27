@@ -1,0 +1,5 @@
+C:\Users\manoj\Documents\Azure Az-204\ApplicationDocker\NetCoreConsole\bin\Release\net6.0\publish\NetCore.Manoj.exe
+C:\Users\manoj\Documents\Azure Az-204\ApplicationDocker\NetCoreConsole\bin\Release\net6.0\publish\NetCore.Manoj.dll
+C:\Users\manoj\Documents\Azure Az-204\ApplicationDocker\NetCoreConsole\bin\Release\net6.0\publish\NetCore.Manoj.deps.json
+C:\Users\manoj\Documents\Azure Az-204\ApplicationDocker\NetCoreConsole\bin\Release\net6.0\publish\NetCore.Manoj.runtimeconfig.json
+C:\Users\manoj\Documents\Azure Az-204\ApplicationDocker\NetCoreConsole\bin\Release\net6.0\publish\NetCore.Manoj.pdb
