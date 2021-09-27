@@ -1,0 +1,14 @@
+/* Build Docker image */
+#  docker build -t counter-image -f Dockerfile .
+
+/* Create a Docker Container */
+# docker create --name core-counter counter-image
+
+/* Start the Docker Container */
+docker start core-counter
+
+/*Stop the Docker Container */
+docker stop core-counter
+
+/* attach to a running Docker container */
+
