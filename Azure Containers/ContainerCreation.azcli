@@ -18,18 +18,18 @@ az resource list
 
 az container show 
 --resource-group 1-637f19d0-playground-sandbox 
---name myapp 
+--name counter-image-container  
 
 az container show 
 --resource-group 1-637f19d0-playground-sandbox 
---name myapp 
+--name counter-image-container 
 --query instanceView.state 
 --output table
 
 # show IP address
 az container show 
 --resource-group 1-637f19d0-playground-sandbox 
---name myapp 
+--name counter-image-container  
 --query {ipAddress:ip,ipAddress:fqdn} 
 --output table 
 

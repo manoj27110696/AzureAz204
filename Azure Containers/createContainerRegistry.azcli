@@ -1,6 +1,6 @@
 az acr create 
---resource-group 1-637f19d0-playground-sandbox  
---name azureDaleManojRegistry 
+--resource-group 1-293f6309-playground-sandbox 
+--name azureManojRegistry 
 --sku Basic 
 
 
@@ -15,4 +15,10 @@ az acr create
 # docker push azuredalemanojregistry.azurecr.io/hello-world:v1
 
 az acr repository list 
---name azureDaleManojRegistry 
+--name azureManojRegistry 
+
+
+az container exec 
+--resource-group 1-293f6309-playground-sandbox  
+--name counter-container  
+--exec-command "cmd.exe" 
