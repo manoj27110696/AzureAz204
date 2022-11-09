@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "Rm1/OAnGCBQm3wkpjlMq6XYE8SI8NI2U2M6U28TxCvw=",
+  "Source": "DockerIntroWebApi",
+  "BasePath": "_content/DockerIntroWebApi",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}
