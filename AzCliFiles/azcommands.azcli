@@ -1,0 +1,33 @@
+az acr create --resource-group 1-2a10774c-playground-sandbox --name manojacr27110696 --sku Basic
+az acr login --name manojacr27110696
+az acr repository list --name manojacr27110696 --output table
+az acr repository show-tags --name manojacr27110696 --repository aci-tutorial-app --output table
+az acr show --name manojacr27110696 --query loginServer
+az container create --resource-group 1-2a10774c-playground-sandbox --name aci-tutorial-app --image manojacr27110696.azurecr.io/aci-tutorial-app:v1 --cpu 1 --memory 1 --registry-login-server manojacr27110696.azurecr.io --ip-address Public --dns-name-label manoj2711058 --ports 80 
+
+#!/bin/bash
+# This script requires Azure CLI version 2.25.0 or later. Check version with `az --version`.
+
+# Modify for your environment.
+# ACR_NAME: The name of your Azure Container Registry
+# SERVICE_PRINCIPAL_NAME: Must be unique within your AD tenant
+ACR_NAME=manojacr27110696.azurecr.io
+SERVICE_PRINCIPAL_NAME=manoj27110696
+
+# Obtain the full registry ID
+ACR_REGISTRY_ID=$(az acr show --name $ACR_NAME --query "id" --output tsv)
+# echo $registryId
+
+# Create the service principal with rights scoped to the registry.
+# Default permissions are for docker pull access. Modify the '--role'
+# argument value as desired:
+# acrpull:     pull only
+# acrpush:     push and pull
+# owner:       push, pull, and assign roles
+PASSWORD=$(az ad sp create-for-rbac --name $SERVICE_PRINCIPAL_NAME --scopes $ACR_REGISTRY_ID --role acrpull --query "password" --output tsv)
+USER_NAME=$(az ad sp list --display-name $SERVICE_PRINCIPAL_NAME --query "[].appId" --output tsv)
+
+# Output the service principal's credentials; use these in your services and
+# applications to authenticate to the container registry.
+echo "Service principal ID: $USER_NAME"
+echo "Service principal password: $PASSWORD"
